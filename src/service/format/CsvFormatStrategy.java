@@ -7,7 +7,7 @@ import java.util.*;
  * @author ryancorbin
  */
 
-public class CsvFileFormat implements FileFormatStrategy {
+public class CsvFormatStrategy implements FileFormatStrategy {
     
     
     @Override

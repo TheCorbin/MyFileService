@@ -5,7 +5,7 @@
  */
 package myfileservice;
 
-import service.format.CsvFileFormat;
+import service.format.CsvFormatStrategy;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,8 +25,8 @@ public class Startup {
     public static void main(String[] args) throws IOException {
         String[] names;
         
-        FileService fileService = new FileService(new TextReader("src" + File.separatorChar + "myData.csv", new CsvFileFormat()),
-                                                  new TextWriter("src" + File.separatorChar + "myData.csv", new CsvFileFormat()));
+        FileService fileService = new FileService(new TextReader("src" + File.separatorChar + "myData.csv", new CsvFormatStrategy()),
+                                                  new TextWriter("src" + File.separatorChar + "myData.csv", new CsvFormatStrategy()));
         
         List<LinkedHashMap<String, String>> inData = fileService.getAllRecords();
         List<String> strList = new ArrayList<>();
