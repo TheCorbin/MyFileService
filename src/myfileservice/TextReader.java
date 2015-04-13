@@ -11,13 +11,13 @@ import java.util.Map;
  *
  * @author ryancorbin
  */
-public class TextFileReader implements FileReaderStrategy {
+public class TextReader implements FileReaderStrategy {
     private FileFormatStrategy formatStrategy;
     private String filePath;
     
-    public TextFileReader(){}
+    public TextReader(){}
     
-    public TextFileReader(String filePath, FileFormatStrategy formatStrategy){
+    public TextReader(String filePath, FileFormatStrategy formatStrategy){
         this.filePath = filePath;
         this.formatStrategy = formatStrategy;         
     }

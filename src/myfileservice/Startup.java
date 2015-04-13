@@ -25,8 +25,8 @@ public class Startup {
     public static void main(String[] args) throws IOException {
         String[] names;
         
-        FileService fileService = new FileService(new TextFileReader("src" + File.separatorChar + "myData.csv", new CsvFileFormat()),
-                                                  new TextFileWriter("src" + File.separatorChar + "myData.csv", new CsvFileFormat()));
+        FileService fileService = new FileService(new TextReader("src" + File.separatorChar + "myData.csv", new CsvFileFormat()),
+                                                  new TextWriter("src" + File.separatorChar + "myData.csv", new CsvFileFormat()));
         
         List<LinkedHashMap<String, String>> inData = fileService.getAllRecords();
         List<String> strList = new ArrayList<>();

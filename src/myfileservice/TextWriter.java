@@ -11,13 +11,13 @@ import java.util.Map;
  *
  * @author ryancorbin
  */
-public class TextFileWriter implements FileWriterStrategy  {
+public class TextWriter implements FileWriterStrategy  {
     private FileFormatStrategy formatStrategy;
     private String filePath;
     
-    public TextFileWriter(){}
+    public TextWriter(){}
     
-    public TextFileWriter(String filePath, FileFormatStrategy formatStrategy){
+    public TextWriter(String filePath, FileFormatStrategy formatStrategy){
         this.filePath = filePath;
         this.formatStrategy = formatStrategy;
     }
