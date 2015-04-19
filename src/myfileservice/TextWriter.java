@@ -59,14 +59,13 @@ public class TextWriter implements FileWriterStrategy  {
         }
         
         tempString = formatStrategy.encodeAll(data);
-        
         final boolean APPEND = false;
         File file = new File(path);
         PrintWriter out = null;
         
         try {
             out = new PrintWriter(new BufferedWriter(new FileWriter(file, APPEND)));
-            out.println(tempString);
+            out.print(tempString);
         } catch(IOException ioe){
             throw new IOException(ioe);
         } finally {
@@ -94,10 +93,13 @@ public class TextWriter implements FileWriterStrategy  {
         if (path== null || path.length() == 0 || newData == null || newData.size() == 0){
             throw new IllegalArgumentException();
         }
+        String tempString = "";
         
-        tempString = formatStrategy.encodeAll(newData);
-        final boolean APPEND = true;
-        File file = new File(path);
+        for(LinkedHashMap<String, String> Record: newData){
+            tempString += formatStrategy.encodeRecord(Record);
+        }    
+            final boolean APPEND = true;
+            File file = new File(path);
         PrintWriter out = null;
         
         try{

@@ -80,11 +80,6 @@ public class Startup {
             System.out.println(e.getMessage());
         }
     
-////    "src" + File.separatorChar  + "files" + File.separatorChar + "mydata.csv"
-//    String firstName = record.get("\"firstName\"").toString();
-//            String lastName = record.get("lastName").toString();
-//            String fullName = firstName + " " + lastName;
-//            strList.add(fullName);
         
         
     }

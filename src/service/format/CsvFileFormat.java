@@ -57,17 +57,23 @@ public class CsvFileFormat implements FileFormatStrategy {
             for (int i=1; i < lines.length; i++){
                 LinkedHashMap<String, String> record = new LinkedHashMap<>();
                 String[] rowData = lines[i].split(",");
+                if(rowData[0].startsWith(QUOTES)){
+                for(int x = 0; x<rowData.length; x++){
+                    rowData[x] = rowData[x].substring(1, rowData[x].length()-1);
+                }
                 for(int j=0; j < rowData.length; j++){
                     record.put(header[j], rowData[j]);
                 }
                 records.add(record);
+                }
             }
-                
         } else {
-            
             for (int i=1; i < lines.length; i++){
                 LinkedHashMap<String, String> record = new LinkedHashMap<>();
                 String[] rowData = lines[i].split(",");
+                for(int x = 0; x<rowData.length; x++){
+                    rowData[x] = rowData[x].substring(1, rowData[x].length()-1);
+                }
                 for(int j=0; j < rowData.length; j++){
                     record.put(Integer.toString(j), rowData[j]);
                 }
@@ -88,30 +94,30 @@ public class CsvFileFormat implements FileFormatStrategy {
     @Override
     public String encodeAll(List<LinkedHashMap<String, String>> updatedFileContent) {
         StringBuilder encodedData = new StringBuilder();
+        System.out.println(updatedFileContent.toString() + "1");
         
         LinkedHashMap<String, String> headerRec = updatedFileContent.get(0);
         Set<String> Headerfields = headerRec.keySet();
-      
+        
         if (hasHeader){ 
             for(Iterator i = Headerfields.iterator(); i.hasNext();) {
-                encodedData.append(i.next()).append("\"").append(",");
-                int lastChar = encodedData.length()-1;
-                encodedData.replace(lastChar, lastChar+1, BR);
+                encodedData.append("\"").append(i.next()).append("\"").append(",");
             }
+            int lastChar = encodedData.length()-1;
+            encodedData.replace(lastChar, lastChar+1, BR); 
         }
         
         for(LinkedHashMap<String, String> dataRow : updatedFileContent) {
-            for(Iterator i = updatedFileContent.iterator(); i.hasNext();){
+            for(Iterator i = Headerfields.iterator(); i.hasNext();){
                 encodedData.append("\"").append(dataRow.get(i.next().toString()))
-                        .append("\"").append(",");        
+                        .append("\"").append(",");     
             }
+            
             int lastChar2 = encodedData.length()-1;
-            encodedData.replace(lastChar2, lastChar2+1, BR);    
+            encodedData.replace(lastChar2, lastChar2+1, BR); 
         }
         
-        int lastChar3 = encodedData.length()-1;
-        encodedData.replace(lastChar3, lastChar3-1, null);
-        
+        System.out.println(encodedData);
         return encodedData.toString();     
     }
     
@@ -137,7 +143,7 @@ public class CsvFileFormat implements FileFormatStrategy {
         }
         
         int lastChar = encodedData.length()-1;
-        encodedData.replace(lastChar, lastChar+1, "\n");
+        encodedData.replace(lastChar, lastChar+1, BR);
         
         return encodedData.toString();
     }   
