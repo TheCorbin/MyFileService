@@ -16,7 +16,7 @@ public interface FileFormatStrategy {
     
     List<LinkedHashMap<String, String>> decodeAll(String data);
     
-    String encodeAll(List<LinkedHashMap<String, String>> updatedFileContent, boolean useHeader);
+    String encodeAll(List<LinkedHashMap<String, String>> updatedFileContent);
     
     String encodeRecord(LinkedHashMap<String, String> updatedFileContent);
 }

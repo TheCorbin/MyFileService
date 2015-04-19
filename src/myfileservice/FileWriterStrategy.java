@@ -5,7 +5,6 @@
  */
 package myfileservice;
 
-import service.format.FileFormatStrategy;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -16,15 +15,26 @@ import java.util.List;
  */
 public interface FileWriterStrategy {
     
-   void saveOrUpdate(List<LinkedHashMap<String, String>> updatedFileContent, boolean useHeader) throws IOException;
+    /**
+     * Writes a completely new file
+     * @param path = file to be written to or created
+     * @param updatedFileContent - List of LinkedHashMaps that contain string keys and values, will become the new file
+     * @param useHeader - a boolean to determine if the formatting should use a header
+     * @throws IOException - If the file isn't able to be created
+     */
+    
+   void writeNewFile(String path, List<LinkedHashMap<String, String>> updatedFileContent) throws IOException, Exception;
    
-   void addNewRecords(List<LinkedHashMap<String, String>> newData, boolean useHeader) throws IOException;      
-    
-    String getFilePath();
-    
-    FileFormatStrategy getFormatStrategy();
-    
-    void setFilePath(String filePath);
-    
-    void setFormatStrategy(FileFormatStrategy formatStrategy);    
+   
+   /**
+    * Adds a single new record
+    * @param path -  The location of the file to which the new record will be added
+    * @param newData - The single record that will be added to the file.
+    * @throws IOException - If the file can't be opened or written to
+    */
+   
+   
+   void addNewRecords(String path, List<LinkedHashMap<String, String>> newData) throws IOException, Exception;      
+   
+     
 }

@@ -5,7 +5,7 @@
  */
 package myfileservice;
 
-import service.format.CsvFormatStrategy;
+import service.format.CsvFileFormat;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,34 +22,45 @@ public class Startup {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         String[] names;
         
-        FileService fileService = new FileService(new TextReader("src" + File.separatorChar + "myData.csv", new CsvFormatStrategy()),
-                                                  new TextWriter("src" + File.separatorChar + "myData.csv", new CsvFormatStrategy()));
+        FileService filer = 
+                new FileService(new TextReader(new CsvFileFormat(",", true)),
+                new TextWriter(new CsvFileFormat(",", true)));
         
-        List<LinkedHashMap<String, String>> inData = fileService.getAllRecords();
-        List<String> strList = new ArrayList<>();
+        List<LinkedHashMap<String, String>> inData = new ArrayList<>();
         
-        for (Map record: inData){
-            String firstName = record.get("firstName").toString();
-            String lastName = record.get("lastName").toString();
-            String fullName = firstName + " " + lastName;
-            strList.add(fullName);
+        try{
+            
+        inData = filer.getAllRecords("src" + File.separatorChar  + "files" + File.separatorChar + "mydata.csv");
+        
+            for (int i =0; i<inData.size(); i++){   
+                System.out.println(inData.get(i).toString());
+            }
+        } catch(IOException ioe){
+            System.out.println(ioe.getMessage());
+        } catch(IllegalArgumentException ie){
+            System.out.println(ie.getMessage());
         }
         
-        names = strList.toArray(new String[strList.size()]);
-        
         System.out.println("File Read!");
-        System.out.println(inData);
+        
+        try {
+            filer.writeNewFile("src" + File.separatorChar  + "files" + File.separatorChar + "mydata2.csv", inData);
+        } catch (IllegalArgumentException i){
+            System.out.println(i.getMessage() + "ILLEGAL!");
+        } catch (IOException io){
+            System.out.println(io.getMessage() + "IO Problemo");
+        } catch (Exception e) {
+            System.out.println(e.getMessage() + "Hello");
+        }
         
         List<LinkedHashMap<String,String>> updatedFileContent =
                 new ArrayList<LinkedHashMap<String, String>>();
         
         LinkedHashMap<String, String> Person =
                 new LinkedHashMap<String, String>();
-        
-        
         
         Person.put("firstName", "Sally");
         Person.put("lastName", "Jones");
@@ -62,9 +73,19 @@ public class Startup {
         Person.put("age", "44");
         updatedFileContent.add(Person);
         
-        fileService.addNewRecords(updatedFileContent, false);
-        System.out.println("Hello!");
-        System.out.println("writing done...");
-    }
+        try {
+            filer.addNewRecords("src" + File.separatorChar  + "files" + File.separatorChar + "mydata2.csv", updatedFileContent);
+            System.out.println("writing done...");
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     
+////    "src" + File.separatorChar  + "files" + File.separatorChar + "mydata.csv"
+//    String firstName = record.get("\"firstName\"").toString();
+//            String lastName = record.get("lastName").toString();
+//            String fullName = firstName + " " + lastName;
+//            strList.add(fullName);
+        
+        
+    }
 }

@@ -13,34 +13,42 @@ import java.util.Map;
  */
 public class TextReader implements FileReaderStrategy {
     private FileFormatStrategy formatStrategy;
-    private String filePath;
+    private final String BR = "\n";
     
-    public TextReader(){}
+    /**
+     * Constructor that sets the FileFormatStrategy when an instance is created
+     * 
+     * @param formatStrategy - Accepts a FormatStrategy based off the formatStrategy interface
+     * @throws IllegalargumentException - If no formatter object is found, you'll have a problem
+     */
     
-    public TextReader(String filePath, FileFormatStrategy formatStrategy){
-        this.filePath = filePath;
-        this.formatStrategy = formatStrategy;         
+    public TextReader(FileFormatStrategy formatStrategy) throws IllegalArgumentException{
+        setFormatStrategy(formatStrategy);       
     }
     
     @Override
-    public List<LinkedHashMap<String, String>> getAllRecords() throws IOException {
+    public List<LinkedHashMap<String, String>> readAll(String path) throws IOException, IllegalArgumentException{
+        if(path == null || path.length() == 0){
+            throw new IllegalArgumentException();
+        }
+        
         List<Map<String, String>> records =
                 new ArrayList<Map<String, String>>();
         
         String rawData = "";
         
-        File file = new File(filePath);
+        File file = new File(path);
         BufferedReader in = null;
         
         try {
             in = new BufferedReader(new FileReader(file));
             String line = in.readLine();
             while(line != null){
-                rawData += (line + "\n");
+                rawData += line + BR;
                 line = in.readLine();
             }
         } catch(IOException ioe){
-            throw ioe;
+            throw new IOException(ioe);
         } finally {
             try {
                 in.close();
@@ -51,23 +59,25 @@ public class TextReader implements FileReaderStrategy {
         return formatStrategy.decodeAll(rawData);
     }
     
-    @Override
-    public String getFilePath(){
-        return filePath;
-    }
+    /**
+     * Sets a format object based on the FormatStrategy interface.  Can be used if you change your
+     * mind after the initial construction
+     * 
+     * @param formatStrategy - Accepts a Format object based off the FormatStrategy
+     * interface.
+     * @throws IllegalArgumentException - Throws an IllegalArgumentException if
+     * no format object is passed in.
+     */
     
-    @Override
-    public void setFilePath(String filePath){
-        this.filePath = filePath;
-    }
-    
-    @Override
-    public FileFormatStrategy getFormatStrategy(){
-        return formatStrategy;
-    }
-    
-    @Override
-    public void setFormatStrategy(FileFormatStrategy formatStrategy){
+    public void setFormatStrategy(FileFormatStrategy formatStrategy) throws IllegalArgumentException {
+        if(formatStrategy == null){
+            throw new IllegalArgumentException();
+        }
+        
         this.formatStrategy = formatStrategy;
     }
+    
+    
+    
+    
 }

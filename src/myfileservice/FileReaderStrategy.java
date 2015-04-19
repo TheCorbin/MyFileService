@@ -5,7 +5,6 @@
  */
 package myfileservice;
 
-import service.format.FileFormatStrategy;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -16,18 +15,14 @@ import java.util.List;
  */
 public interface FileReaderStrategy {
     
-    List<LinkedHashMap<String, String>> getAllRecords() throws IOException;
+    /**
+     * Reads all of the records in a file and outputs them in a LinkedHashMap
+     * @param path = Path of the file being written to
+     * @return - Returns a LinkedHashMap of string keys and values
+     * @throws IOException  = throws an IOException if the file is null
+     */
     
-    String getFilePath();
-    
-    FileFormatStrategy getFormatStrategy();
-    
-    void setFilePath(String filePath);
-    
-    void setFormatStrategy(FileFormatStrategy formatStrategy);
-            
-    
-    
-    
+    public abstract List<LinkedHashMap<String, String>> readAll(String path) throws IOException;
+      
     
 }
